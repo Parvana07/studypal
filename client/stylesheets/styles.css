@@ -31,8 +31,17 @@ span {
   margin-right: 10px;
 }
 
-/* .register-input .text {
+.textReg {
   height: 40px;
   width: 450px;
-  margin: 150px auto;
-} */
+  margin-bottom: 5px;
+  /* margin: 150px auto; */
+}
+
+.regButton {
+  width: 450px;
+  height: 35px;
+}
+h1 {
+  text-align: center;
+}
