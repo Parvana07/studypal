@@ -68,13 +68,15 @@ const Register = props => {
         school,
         interests
       };
-      // fetch('/users/addUser', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'Application/JSON' },
-      //   body: JSON.stringify(body)
-      // })
-      //   .then(resp => resp.json())
-      //   .catch(err => console.log('Register fetch /users/addUser: ERROR: ', err));
+      fetch("/users/addUser", {
+        method: "POST",
+        headers: { "Content-Type": "Application/JSON" },
+        body: JSON.stringify(body)
+      })
+        .then(resp => resp.json())
+        .catch(err =>
+          console.log("Register fetch /users/addUser: ERROR: ", err)
+        );
       history.push("/profile");
     }
   };
@@ -88,28 +90,28 @@ const Register = props => {
           type="text"
           placeholder="First Name"
           value={firstname}
-          onChange={event => firstnameOnChange(event.target.value)}
+          onChange={firstnameOnChange}
         />
         <input
           className="text"
           type="text"
           placeholder="Last Name"
           value={lastname}
-          onChange={event => lastnameOnChange(event.target.value)}
+          onChange={lastnameOnChange}
         />
         <input
           className="text"
           type="text"
           placeholder="Username"
           value={username}
-          onChange={event => usernameOnChange(event.target.value)}
+          onChange={usernameOnChange}
         />
         <input
           className="text"
           type="password"
           placeholder="Password"
           value={password}
-          onChange={event => passwordOnChange(event.target.value)}
+          onChange={passwordOnChange}
         />
         <input
           className="text"

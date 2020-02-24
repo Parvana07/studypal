@@ -49,7 +49,7 @@ app.get('/', (req, res) =>
 
 // catch-all route handler for any requests to an unknown route
 app.use((req, res) => {
-  res.status(404).send(404);
+  res.sendStatus(404);
 });
 
 //express global error handler

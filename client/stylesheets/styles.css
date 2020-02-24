@@ -3,6 +3,17 @@
   width: 500px;
   margin: 150px auto;
 }
+
+.login-invalid-msg {
+  color: red;
+}
+
+.btnSubmit {
+  display: block;
+
+  
+}
+
 .welcome {
   margin-right: 20px;
 }
