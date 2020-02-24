@@ -1,128 +1,153 @@
-import React, { Component } from "react";
-
-class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      school: "",
-      favs: false
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.setInterest = this.setInterest.bind(this);
-  }
-
-  handleSubmit() {
-    alert(
-      ` ${this.state.username} ${this.state.firstName} ${this.state.lastName} ${this.state.email} ${this.state.password} ${this.state.school} `
-    );
-    alert(this.state.favs);
-  }
-  handleChange(evt) {
-    this.setState({ [evt.target.name]: evt.target.value });
-  }
-  componentDidMount() {
-    this.setState({ favs: this.state.favs });
-  }
-  setInterest() {
-    this.setState(prevState => {
-      return {
-        favs: !prevState.favs
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+// custom hook for handling input boxes
+const useInput = init => {
+  const [value, setValue] = useState(init);
+  const onChange = e => {
+    setValue(e.target.value);
+  };
+  return [value, onChange];
+};
+//REGISTER: using React Hook
+const Register = props => {
+  //variables
+  const history = useHistory();
+  const [firstname, firstnameOnChange] = useInput("");
+  const [lastname, lastnameOnChange] = useInput("");
+  const [username, usernameOnChange] = useInput("");
+  const [password, passwordOnChange] = useInput("");
+  const [email, emailOnChange] = useInput("");
+  const [school, schoolOnChange] = useInput("");
+  const [checkboxes, setCheckboxes] = useState([
+    { value: "Biology", isChecked: false },
+    { value: "Business", isChecked: false },
+    { value: "Communications", isChecked: false },
+    { value: "Computer Science", isChecked: false },
+    { value: "Education", isChecked: false },
+    { value: "Engineering", isChecked: false },
+    { value: "Law", isChecked: false },
+    { value: "Liberal Arts", isChecked: false },
+    { value: "Math", isChecked: false },
+    { value: "Music", isChecked: false },
+    { value: "Nursing", isChecked: false },
+    { value: "Political Science", isChecked: false },
+    { value: "Psychology", isChecked: false }
+  ]);
+  //checkbox related
+  //toggles the value of checkbox's isChecked property
+  const cboxCheck = type => {
+    if (!type.isChecked) type.isChecked = true;
+    else type.isChecked = false;
+  };
+  //creates account on submit button click
+  //use fetch to save to database
+  const createAccount = () => {
+    console.log("createAccount called");
+    if (
+      firstname == "" ||
+      lastname == "" ||
+      username == "" ||
+      email == "" ||
+      school == ""
+    )
+      alert("Please complete all parts to create account");
+    else {
+      const interests = [];
+      for (let c of checkboxes) {
+        if (c.isChecked) {
+          interests.push(c.value);
+        }
+      }
+      props.onRegisterSubmit(username);
+      const body = {
+        firstname,
+        lastname,
+        username,
+        password,
+        email,
+        school,
+        interests
       };
-    });
-  }
-  render() {
-    let checkboxes = [];
-    const interest = [
-      "Computer Science",
-      "Communications",
-      "Political Sciences",
-      "Business",
-      "Liberal Arts",
-      "Physics",
-      "Nursing",
-      "Engineer"
-    ];
-    // const breaks = [4, 8, 12, 16];
-    for (let i = 0; i < interest.length; i++) {
-      // if (i < 6) {
-      checkboxes.push(
-        <div className="interestCol">
-          <span className="checkbox">
-            <input
-              type="checkbox"
-              value={interest[i]}
-              name={interest[i]}
-              onClick={this.setInterest}
-              id={i}
-            />
-            <label>{interest[i]}</label>
-          </span>
-        </div>
-      );
-      // }
+      // fetch('/users/addUser', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'Application/JSON' },
+      //   body: JSON.stringify(body)
+      // })
+      //   .then(resp => resp.json())
+      //   .catch(err => console.log('Register fetch /users/addUser: ERROR: ', err));
+      history.push("/profile");
     }
-
-    return (
-      <div className="login-register-input">
-        <form onSubmit={this.handleSubmit} action="">
-          <h1>Create Account</h1>
-          <input
-            className="textReg"
-            name="username"
-            onChange={this.handleChange}
-            type="text"
-            placeholder="Username"
-          />
-          <input
-            className="textReg"
-            name="firstName"
-            onChange={this.handleChange}
-            type="text"
-            placeholder="First Name"
-          />
-          <input
-            className="textReg"
-            name="lastName"
-            onChange={this.handleChange}
-            type="text"
-            placeholder="Last Name"
-          />
-          <input
-            className="textReg"
-            name="email"
-            onChange={this.handleChange}
-            type="email"
-            placeholder="Email"
-          />
-          <input
-            className="textReg"
-            name="password"
-            onChange={this.handleChange}
-            type="password"
-            placeholder="Password"
-          />
-          <input
-            className="textReg"
-            name="school"
-            onChange={this.handleChange}
-            type="text"
-            placeholder="School"
-          />
-          {checkboxes}
-          <br />
-          <p>
-            I agree all statements in <a href="">Term of service.</a>
-          </p>
-          <input className="regButton" type="submit" />
-        </form>
-      </div>
-    );
-  }
-}
+  };
+  //html component
+  return (
+    <div className="login-register-input">
+      <form action="">
+        <h1>Create Account</h1>
+        <input
+          className="text"
+          type="text"
+          placeholder="First Name"
+          value={firstname}
+          onChange={event => firstnameOnChange(event.target.value)}
+        />
+        <input
+          className="text"
+          type="text"
+          placeholder="Last Name"
+          value={lastname}
+          onChange={event => lastnameOnChange(event.target.value)}
+        />
+        <input
+          className="text"
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={event => usernameOnChange(event.target.value)}
+        />
+        <input
+          className="text"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={event => passwordOnChange(event.target.value)}
+        />
+        <input
+          className="text"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={emailOnChange}
+        />
+        <input
+          className="text"
+          type="text"
+          placeholder="School"
+          value={school}
+          onChange={schoolOnChange}
+        />
+        <div className="checkboxes">
+          {checkboxes.map((cb, i) => (
+            <span className="interest-checkbox" key={`intCb${i}`}>
+              <input
+                type="checkbox"
+                key={i}
+                value={cb.value}
+                id={cb.value}
+                onClick={() => cboxCheck(cb)}
+              />
+              <label>{cb.value}</label>
+            </span>
+          ))}
+        </div>
+        <br />
+        <p>
+          I agree all statements in <a href="">Term of service.</a>
+        </p>
+        <button type="button" className="btnSubmit" onClick={createAccount}>
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
 export default Register;

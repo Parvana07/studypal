@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-
+import { Link } from "react-router-dom";
+import "../stylesheets/login.css";
 // function Login(props) {
 class Login extends Component {
   constructor(props) {
@@ -29,30 +30,36 @@ class Login extends Component {
   }
   render() {
     return (
-      <div className="login-register-input">
-        <h1>StudyPal</h1>
-        <p className="welcome">Welcome back!</p>
-        <form onSubmit={this.handleSubmit} action="">
-          <input
-            className="text"
-            type="text"
-            name="username"
-            onChange={this.handleChange}
-            placeholder="Username"
-          />
-          <input
-            className="text"
-            type="password"
-            name="password"
-            onChange={this.handleChange}
-            placeholder="Password"
-          />
-          <input className="button" type="submit" value="Submit" />
-        </form>
-        <a href="">Forgot password?</a>
-        <br />
-        <span>New to StudyPal?</span>
-        <a href="">Join now</a>
+      <div className="login-register-input-outer">
+        <div className="login-register-input-inner">
+          <h1 className="welcome">Welcome back!</h1>
+          <form onSubmit={this.handleSubmit} action="">
+            <div>
+              <input
+                className="loginInput"
+                type="text"
+                name="username"
+                onChange={this.handleChange}
+                placeholder="Username"
+              />
+            </div>
+            <div>
+              <input
+                className="loginInput"
+                type="password"
+                name="password"
+                onChange={this.handleChange}
+                placeholder="Password"
+              />
+            </div>
+            <input className="buttonLogin" type="submit" value="Submit" />
+          </form>
+          <a href="">Forgot password?</a>
+          <div>
+            <span className="newTo">New to StudyPal?</span>
+            <Link to="/register">Join now</Link>
+          </div>
+        </div>
       </div>
     );
   }
