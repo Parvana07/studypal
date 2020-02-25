@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import "../stylesheets/login.css";
-// function Login(props) {
+import { Link, Redirect } from "react-router-dom";
+
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
       password: "",
-      input: "valid" //used to display error messages below input box
+      input: "valid", //used to display error messages below input box
+      verified: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.userLogin = this.userLogin.bind(this);
@@ -40,7 +40,8 @@ class Login extends Component {
           //user validation result
           if (result) {
             //successful
-            this.props.history.push("/profile"); //redirect
+            this.props.onLoginSubmit(username); //send username info back + update state in App.jsx
+            this.setState({ ...this.state, verified: true }); //update state
           } else {
             //unsuccessful
             this.setState({ ...this.state, input: "invalid" });
@@ -51,6 +52,7 @@ class Login extends Component {
         );
     }
   }
+
   render() {
     const inputState = this.state.input;
 
@@ -70,6 +72,11 @@ class Login extends Component {
         );
     };
 
+    //redirect to /profile page if verified
+    if (this.state.verified) {
+      return <Redirect to={`/profile/${this.state.username}`} />;
+    }
+    //else
     return (
       <div className="login-register-input">
         <h1>StudyPal</h1>
@@ -104,5 +111,23 @@ class Login extends Component {
     );
   }
 }
+
+// function Login(props) {
+//   return (
+//     <div className="login-register-input">
+//       <h1>StudyPal</h1>
+//       <p className="welcome">Welcome back!</p>
+//       <form action="">
+//         <input className="text" type="text" placeholder="Username" />
+//         <input className="text" type="password" placeholder="Password" />
+//         <input className="button" type="submit" value="Submit" />
+//       </form>
+//       <a href="">Forgot password?</a>
+//       <br />
+//       <span>New to StudyPal?</span>
+//       <Link to="/register">Join now</Link>
+//     </div>
+//   );
+// }
 
 export default Login;

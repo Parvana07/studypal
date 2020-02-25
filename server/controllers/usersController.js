@@ -39,12 +39,14 @@ usersController.validateUser = (req, res, next) => {
 usersController.matchUsers = async (req, res, next) => {
   console.log("userController.matchUsers");
   try {
+    // const { username } = req.params.;
     //query
     const q =
       "SELECT users.username, interests.interest_name, schools.name as school, users._id as user_id " +
       "FROM users LEFT OUTER JOIN interests ON interests.user_id = users._id LEFT OUTER JOIN schools " +
       "on schools.user_id = users._id WHERE NOT users._id = $1 AND " +
       "interests.interest_name = $2 AND schools.name = $3 LIMIT 6";
+    // const q = "SELECT * FROM users WHERE users.username=";
     const values = ["1", "Math", "UCLA"]; //HARDCODED FOR NOW
 
     db.query(q, values).then(data => {
